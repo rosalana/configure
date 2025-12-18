@@ -103,6 +103,11 @@ class Value extends Node
         return !$this->isEmpty();
     }
 
+    public function isNull(): bool
+    {
+        return strtolower($this->value) === 'null' || $this->isEmpty();
+    }
+
     public function withComment(string $label): static
     {
         if ($this->siblingsBefore()->last() instanceof Comment) {
