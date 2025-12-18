@@ -10,7 +10,7 @@ class Value extends Node
 {
     use ZeroPaddingNode;
 
-    protected string|null $value;
+    protected string|null $value = null;
 
     public function __construct(int $start, int $end, array $raw)
     {
