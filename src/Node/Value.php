@@ -93,9 +93,14 @@ class Value extends Node
         return $this;
     }
 
-    public function filled(): bool
+    public function isEmpty(): bool
     {
-        return $this->value !== null;
+        return $this->value === null;
+    }
+
+    public function isNotEmpty(): bool
+    {
+        return !$this->isEmpty();
     }
 
     public function withComment(string $label): self
