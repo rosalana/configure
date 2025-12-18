@@ -173,6 +173,15 @@ class Section extends ParentNode
         return $this;
     }
 
+    public function withoutComment(): static
+    {
+        if ($this->siblingsBefore()->last() instanceof RichComment) {
+            $this->siblingsBefore()->last()->remove();
+        }
+        
+        return $this;
+    }
+
     protected static function normalize(array $tree): Collection
     {
         $result = collect();

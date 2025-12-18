@@ -122,6 +122,15 @@ class Value extends Node
         return $this;
     }
 
+    public function withoutComment(): static
+    {
+        if ($this->siblingsBefore()->last() instanceof Comment) {
+            $this->siblingsBefore()->last()->remove();
+        }
+        
+        return $this;
+    }
+
     protected function getValueDataType(): string
     {
         if (is_numeric($this->value)) {
