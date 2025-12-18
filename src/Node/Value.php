@@ -123,7 +123,7 @@ class Value extends Node
             return 'number';
         }
 
-        if (in_array(strtolower($this->value), ['true', 'false'], true)) {
+        if (in_array(strtolower($this->value), ['true', 'false', 'null'], true)) {
             return 'boolean';
         }
 
