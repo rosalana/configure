@@ -9,7 +9,7 @@ use Rosalana\Configure\Node\File;
 
 abstract class Node implements ContractsNode
 {
-    protected ParentNode|null $parent = null;
+    protected Configure|ParentNode|null $parent = null;
 
     protected string $key;
     protected bool $created = false;
