@@ -340,12 +340,12 @@ abstract class Node implements ContractsNode
         ];
     }
 
-    // public function __call($name, $arguments)
-    // {
-    //     if ($this->parent() === null) {
-    //         throw new \BadMethodCallException("Method {$name} does not exist on " . static::class);
-    //     }
+    public function __call($name, $arguments)
+    {
+        if ($this->parent() === null) {
+            throw new \BadMethodCallException("Method {$name} does not exist on " . static::class);
+        }
 
-    //     return $this->parent()->$name(...$arguments);
-    // }
+        return $this->parent()->$name(...$arguments);
+    }
 }
