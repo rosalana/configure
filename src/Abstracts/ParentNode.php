@@ -3,6 +3,7 @@
 namespace Rosalana\Configure\Abstracts;
 
 use Illuminate\Support\Collection;
+use Rosalana\Configure\Node\Comment;
 use Rosalana\Configure\Node\RichComment;
 use Rosalana\Configure\Node\Section;
 use Rosalana\Configure\Node\Value;
@@ -96,15 +97,20 @@ abstract class ParentNode extends Node
     }
 
     /**
-     * Get or create a RichComment node by key.
+     * Create a simple or rich comment node.
      * 
-     * @param string $key
+     * @param string $label
      * @param string|null $description
-     * @return RichComment
+     * @return Comment|RichComment
      */
-    public function comment(string $key, ?string $description = null): RichComment
+    public function comment(string $label, ?string $description = null): Comment|RichComment
     {
-        $comment = RichComment::makeEmpty($key, $description);
+        if ($description === null) {
+            $comment = Comment::makeEmpty($label);
+        } else {
+            $comment = RichComment::makeEmpty($label, $description);
+        }
+
         $this->addChild($comment);
 
         return $comment;
