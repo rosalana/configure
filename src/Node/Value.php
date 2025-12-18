@@ -93,6 +93,11 @@ class Value extends Node
         return $this;
     }
 
+    public function filled(): bool
+    {
+        return $this->value !== null;
+    }
+
     public function withComment(string $label): self
     {
         if ($this->siblingsBefore()->last() instanceof Comment) {
