@@ -67,7 +67,7 @@ class File extends ParentNode
         return $this->name() . '.php';
     }
 
-    public function setRaw(array $raw): self
+    public function setRaw(array $raw): static
     {
         $this->raw = $raw;
         $this->start = array_key_first($raw) ?? 0;
@@ -76,12 +76,12 @@ class File extends ParentNode
         return $this;
     }
 
-    public function rename(string $name): self
+    public function rename(string $name): static
     {
         return $this; // maybe in future
     }
 
-    public function remove(): self
+    public function remove(): static
     {
         return $this; // not available
     }

@@ -130,7 +130,7 @@ abstract class ParentNode extends Node
     /**
      * Get a child node by its name.
      */
-    public function getChild(string $name): Node|self|null
+    public function getChild(string $name): Node|static|null
     {
         foreach ($this->nodes as $node) {
             if ($node->key() === $name) {
@@ -149,7 +149,7 @@ abstract class ParentNode extends Node
      * 
      * @return $this
      */
-    public function swapChildren(Node|self $first, Node|self $second, bool $ghost = false): self
+    public function swapChildren(Node|self $first, Node|self $second, bool $ghost = false): static
     {
         $nodes = $this->nodes->values();
 
@@ -179,7 +179,7 @@ abstract class ParentNode extends Node
      * @param bool $ghost If true, the node is added without affecting indexes.
      * @return $this
      */
-    public function addChild(Node|self $node, bool $ghost = false): self
+    public function addChild(Node|self $node, bool $ghost = false): static
     {
         $node->setParent($this);
 
@@ -199,7 +199,7 @@ abstract class ParentNode extends Node
      * @param bool $ghost If true, the node is removed without affecting indexes.
      * @return $this
      */
-    public function removeChild(Node|self $node, bool $ghost = false): self
+    public function removeChild(Node|self $node, bool $ghost = false): static
     {
         if (! $this->hasChild($node)) return $this;
 
@@ -218,7 +218,7 @@ abstract class ParentNode extends Node
      * @param bool $ghost If true, the children are cleared without affecting indexes.
      * @return $this
      */
-    public function clearChildren(bool $ghost = false): self
+    public function clearChildren(bool $ghost = false): static
     {
         $this->nodes = collect();
 
@@ -264,7 +264,7 @@ abstract class ParentNode extends Node
         }
     }
 
-    public function moveTo(int $line): self
+    public function moveTo(int $line): static
     {
         $distance = abs($this->start() - $this->end());
         $offset = $line - $this->start();
@@ -278,7 +278,7 @@ abstract class ParentNode extends Node
         return $this;
     }
 
-    public function scaleUp(int $lines): self
+    public function scaleUp(int $lines): static
     {
         $siblingsToMove = $this->siblingsAfter();
         $this->end += $lines;
@@ -296,7 +296,7 @@ abstract class ParentNode extends Node
         return $this;
     }
 
-    public function scaleDown(int $lines): self
+    public function scaleDown(int $lines): static
     {
         $siblingsToMove = $this->siblingsAfter();
         $this->end -= $lines;

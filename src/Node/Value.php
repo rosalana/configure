@@ -78,7 +78,7 @@ class Value extends Node
         ];
     }
 
-    public function add(string $value): self
+    public function add(string $value): static
     {
         if (!$this->value) {
             $this->value = $value;
@@ -87,7 +87,7 @@ class Value extends Node
         return $this;
     }
 
-    public function set(string $value): self
+    public function set(string $value): static
     {
         $this->value = $value;
         return $this;
@@ -103,7 +103,7 @@ class Value extends Node
         return !$this->isEmpty();
     }
 
-    public function withComment(string $label): self
+    public function withComment(string $label): static
     {
         if ($this->siblingsBefore()->last() instanceof Comment) {
             $this->siblingsBefore()->last()->remove();

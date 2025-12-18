@@ -198,7 +198,7 @@ abstract class Node implements ContractsNode
         $this->parent()->swapChildren($this, $other);
     }
 
-    public function moveTo(int $line): self
+    public function moveTo(int $line): static
     {
         $distance = abs($this->start() - $this->end());
 
@@ -208,7 +208,7 @@ abstract class Node implements ContractsNode
         return $this;
     }
 
-    public function moveUp(): self
+    public function moveUp(): static
     {
         $beforeNode = $this->siblingsBefore()->last();
 
@@ -219,7 +219,7 @@ abstract class Node implements ContractsNode
         return $this;
     }
 
-    public function moveDown(): self
+    public function moveDown(): static
     {
         $afterNode = $this->siblingsAfter()->first();
 
@@ -230,17 +230,17 @@ abstract class Node implements ContractsNode
         return $this;
     }
 
-    public function keepStart(): self
+    public function keepStart(): static
     {
         return $this->before($this->siblings()->first());
     }
 
-    public function keepEnd(): self
+    public function keepEnd(): static
     {
         return $this->after($this->siblings()->last());
     }
 
-    public function before(Node|ParentNode|string $node): self
+    public function before(Node|ParentNode|string $node): static
     {
         if (is_string($node)) {
             $node = $this->parent()->getChild($node);
@@ -263,7 +263,7 @@ abstract class Node implements ContractsNode
         return $this;
     }
 
-    public function after(Node|ParentNode|string $node): self
+    public function after(Node|ParentNode|string $node): static
     {
         if (is_string($node)) {
             $node = $this->parent()->getChild($node);
@@ -286,29 +286,31 @@ abstract class Node implements ContractsNode
         return $this;
     }
 
-    public function setKey(string $key): self
+    public function setKey(string $key): static
     {
         $this->key = $key;
         return $this;
     }
 
-    public function setParent(ParentNode|Configure $parent): self
+    public function setParent(ParentNode|Configure $parent): static
     {
         $this->parent = $parent;
         return $this;
     }
 
-    public function setStart(int $start): ContractsNode
+    public function setStart(int $start): static
     {
-        throw new \Exception('Not implemented');
+        $this->start = $start;
+        return $this;
     }
 
-    public function setEnd(int $end): ContractsNode
+    public function setEnd(int $end): static
     {
-        throw new \Exception('Not implemented');
+        $this->end = $end;
+        return $this;
     }
 
-    public function rename(string $name): self
+    public function rename(string $name): static
     {
         $parts = explode('.', $this->key());
         $parts[array_key_last($parts)] = $name;
