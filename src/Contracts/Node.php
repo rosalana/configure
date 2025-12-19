@@ -291,6 +291,14 @@ interface Node
     public function keepEnd(): static;
 
     /**
+     * Place the node before another node.
+     * @param ChildNode|ParentNode|string $node
+     * 
+     * @return static
+     */
+    public function before(ChildNode|ParentNode|string $node): static;
+
+    /**
      * Place the node after another node.
      * @param ChildNode|ParentNode|string $node
      * 
@@ -299,12 +307,20 @@ interface Node
     public function after(ChildNode|ParentNode|string $node): static;
 
     /**
-     * Place the node before another node.
-     * @param ChildNode|ParentNode|string $node
+     * Cut the node from it's parent and move it to another parent.
+     * @param ParentNode|string $path
      * 
      * @return static
      */
-    public function before(ChildNode|ParentNode|string $node): static;
+    public function cut(ParentNode|string $path): static;
+
+    /**
+     * Copy the node to another parent.
+     * @param ParentNode|string $path
+     * 
+     * @return static
+     */
+    public function copy(ParentNode|string $path): static;
 
     /**
      * Set the key of the node.

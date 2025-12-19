@@ -296,6 +296,29 @@ abstract class Node implements ContractsNode
         return $this;
     }
 
+    public function cut(ParentNode|string $parent): static
+    {
+        if (is_string($parent)) {
+            $parent = $this->root()->section($parent);
+        }
+
+        $this->parent()->removeChild($this);
+        $parent->addChild($this);
+
+        return $this;
+    }
+
+    public function copy(ParentNode|string $parent): static
+    {
+        if (is_string($parent)) {
+            $parent = $this->root()->section($parent);
+        }
+
+        $parent->addChild($this->replicate());
+
+        return $this;
+    }
+
     public function setKey(string $key): static
     {
         $this->key = $key;
