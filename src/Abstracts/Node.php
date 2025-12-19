@@ -33,6 +33,11 @@ abstract class Node implements ContractsNode
         return $instance;
     }
 
+    public function type(): string
+    {
+        return strtolower(class_basename($this));
+    }
+
     public function key(): string
     {
         return $this->key;
@@ -141,6 +146,11 @@ abstract class Node implements ContractsNode
     public function isDirty(): bool
     {
         return false; // not implemented yet
+    }
+
+    public function isTypeOf(string $type): bool
+    {
+        return $this->type() === strtolower($type);
     }
 
     public function isSubNode(): bool
@@ -326,7 +336,7 @@ abstract class Node implements ContractsNode
     public function toArray(): array
     {
         return [
-            'type' => class_basename($this),
+            'type' => $this->type(),
             'start' => $this->start,
             'end' => $this->end,
             'raw' => $this->raw,
@@ -338,6 +348,7 @@ abstract class Node implements ContractsNode
             'is_sub_node' => $this->isSubNode(),
             'parent' => $this->parent()?->key() ?? null,
             'was_created' => $this->isNew(),
+            'is_dirty' => $this->isDirty(),
             'render' => $this->render(),
         ];
     }

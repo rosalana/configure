@@ -48,6 +48,13 @@ interface Node
     public function render(): array;
 
     /**
+     * Get the type of the node.
+     * 
+     * @return string
+     */
+    public function type(): string;
+
+    /**
      * Get the key of the node.
      * 
      * @internal
@@ -177,6 +184,14 @@ interface Node
      * @return bool
      */
     public function isDirty(): bool;
+
+    /**
+     * Determine if the node is of a specific type.
+     * @param string $type 'file', 'section', 'value', 'richcomment', 'comment'
+     * 
+     * @return bool
+     */
+    public function isTypeOf(string $type): bool;
 
     /**
      * Determine if the node is a sub-node (not top-level).
