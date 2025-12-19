@@ -93,6 +93,11 @@ class Value extends Node
         return $this;
     }
 
+    public function get(): ?string
+    {
+        return $this->value;
+    }
+
     public function isEmpty(): bool
     {
         return $this->value === null;
@@ -105,7 +110,37 @@ class Value extends Node
 
     public function isNull(): bool
     {
-        return strtolower($this->value) === 'null' || $this->isEmpty();
+        return $this->getValueDataType() === 'null' || $this->isEmpty();
+    }
+
+    public function isString(): bool
+    {
+        return $this->getValueDataType() === 'string';
+    }
+
+    public function isNumber(): bool
+    {
+        return $this->getValueDataType() === 'number';
+    }
+
+    public function isBoolean(): bool
+    {
+        return $this->getValueDataType() === 'boolean';
+    }
+
+    public function isArray(): bool
+    {
+        return $this->getValueDataType() === 'array';
+    }
+
+    public function isFunction(): bool
+    {
+        return $this->getValueDataType() === 'function';
+    }
+
+    public function isClass(): bool
+    {
+        return $this->getValueDataType() === 'class';
     }
 
     public function withComment(string $label): static
@@ -137,8 +172,12 @@ class Value extends Node
             return 'number';
         }
 
-        if (in_array(strtolower($this->value), ['true', 'false', 'null'], true)) {
+        if (in_array(strtolower($this->value), ['true', 'false'], true)) {
             return 'boolean';
+        }
+
+        if (strtolower($this->value) === 'null') {
+            return 'null';
         }
 
         if (str_starts_with($this->value, '[') && str_ends_with($this->value, ']')) {
