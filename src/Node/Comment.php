@@ -20,7 +20,7 @@ class Comment extends Node
     public static function makeEmpty(string $label): static
     {
         $instance = parent::makeEmpty('comment_' . bin2hex(random_bytes(4)));
-        $instance->setLabel($label);
+        $instance->setLabel($label, true);
         $instance->end += count(explode("\n", $label)) - 1;
 
         return $instance;
@@ -66,7 +66,7 @@ class Comment extends Node
 
                 $nodes->push(
                     Comment::make($start, $end, $buffer)
-                        ->setLabel($label)
+                        ->setLabel($label, true)
                         ->setKey(
                             $stack ? implode('.', $stack) . '.' . $key : $key
                         )
@@ -84,7 +84,7 @@ class Comment extends Node
 
             $nodes->push(
                 Comment::make($start, $end, $buffer)
-                    ->setLabel($label)
+                    ->setLabel($label, true)
                     ->setKey(
                         $stack ? implode('.', $stack) . '.' . $key : $key
                     )
@@ -112,8 +112,16 @@ class Comment extends Node
         return $this->label;
     }
 
-    public function setLabel(string $label): static
+    public function setLabel(string $label, bool $ghost = false): static
     {
+        if (! $ghost) {
+            $currentScale = count(explode("\n", $this->label));
+            $incommingScale = count(explode("\n", $label));
+
+            $this->end += $incommingScale - $currentScale;
+            $this->parent()->reflow();
+        }
+
         $this->label = $label;
         return $this;
     }
