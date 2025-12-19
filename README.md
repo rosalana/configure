@@ -482,4 +482,12 @@ $comment->setDescription(string $body): static;
 
 ## License
 
-MIT © Rosalana 2025. See [LICENSE](/LICENCE) for details.
+Rosalana Configure is open-source under the [MIT license](/LICENCE), allowing you to freely use, modify, and distribute it with minimal restrictions.
+
+You may not be able to use our systems but you can use our code to build your own.
+
+For details on how to contribute or how the Rosalana ecosystem is maintained, please refer to each repository’s individual guidelines.
+
+**Questions or feedback?**
+
+Feel free to open an issue or contribute with a pull request. Happy coding with Rosalana!
