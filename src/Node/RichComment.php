@@ -171,11 +171,19 @@ class RichComment extends Node
 
             if ($insideDescription && preg_match('/^\|\s*(.*)$/', $trim, $m)) {
                 $text = trim($m[1]);
-                if ($text !== '') {
-                    $description[] = $text;
-                }
+                $description[] = $text;
                 continue;
             }
+        }
+
+        // Remove empty lines from the beginning
+        while (!empty($description) && trim($description[0]) === '') {
+            array_shift($description);
+        }
+
+        // Remove empty lines from the end
+        while (!empty($description) && trim(end($description)) === '') {
+            array_pop($description);
         }
 
         return [
