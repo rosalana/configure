@@ -255,7 +255,7 @@ class Value extends Node
             $this->end = $this->start();
         }
 
-        if (str_ends_with(',', array_last($result))) {
+        if (str_ends_with(array_last($result), ',')) {
             $last = array_last($result);
             array_pop($result);
             array_push($result, rtrim($last, ','));
