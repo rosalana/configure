@@ -111,10 +111,10 @@ $file->value('connections.mysql.host', 'localhost');
 ```php
 $value = $file->value('connections.mysql.host');
 
-$value->get();          // current value
-$value->set('localhost'); // hard set
-$value->add('localhost'); // soft set
-$value->remove();       // delete value
+$value->get();               // current value
+$value->set('localhost');    // hard set
+$value->add('localhost');    // soft set
+$value->remove();            // delete value
 ```
 
 ### Soft assignment
