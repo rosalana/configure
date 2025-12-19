@@ -11,6 +11,7 @@ class Value extends Node
     use ZeroPaddingNode;
 
     protected string|null $value = null;
+    const WRAP_ARRAY_AFTER = 5;
 
     public function __construct(int $start, int $end, array $raw)
     {
@@ -103,7 +104,7 @@ class Value extends Node
             $this->value = $value;
         }
 
-        if ($this->arrayCount() >= 5) {
+        if ($this->arrayCount() >= self::WRAP_ARRAY_AFTER) {
             $this->end = $this->start() + $this->arrayCount() + 1;
         } else {
             $this->end = $this->start();
@@ -120,7 +121,7 @@ class Value extends Node
     {
         $this->value = $value;
 
-        if ($this->arrayCount() >= 5) {
+        if ($this->arrayCount() >= self::WRAP_ARRAY_AFTER) {
             $this->end = $this->start() + $this->arrayCount() + 1;
         } else {
             $this->end = $this->start();
@@ -255,7 +256,7 @@ class Value extends Node
             array_push($result, $trim);
         }
 
-        if (count($result) >= 5) {
+        if (count($result) >= self::WRAP_ARRAY_AFTER) {
             $this->end = $this->start() + count($result) + 1;
         } else {
             $this->end = $this->start();
