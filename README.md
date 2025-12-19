@@ -142,6 +142,8 @@ $value->set("env('DB_HOST', 'localhost')");  // function
 $value->set("User::class");                  // class constant
 ```
 
+Non-associative arrays can be written on multiple lines and still be recognized correctly. **The engine will automatically reformat them when containing five items or more**.
+
 > [!IMPORTANT]
 > Associative arrays must be created using `section()`, not `set()`.
 
