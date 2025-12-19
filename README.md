@@ -274,7 +274,7 @@ As you can see, comments were placed **inside** the section they are created in 
 
 Selecting comments can be tricky, because comments do not have keys.
 
-More proper way to create and select comments is to bound them to other nodes. Every node may have **one associated comment**, placed immediately above it.
+More proper way to create and select comments is to bound them to other nodes. Every node may have **one associated comment, placed immediately above it.**
 
 ```php
 $file->section('connections')
