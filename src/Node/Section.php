@@ -199,8 +199,25 @@ class Section extends ParentNode
             if (is_array($value)) {
                 $meta = $value['__meta'] ?? null;
                 unset($value['__meta']);
-
+                
                 $children = static::normalize($value);
+                
+                if ($meta && $children->isEmpty() && static::isNotEmptyArray($meta)) {
+                    
+                    $value = Value::make(
+                        start: $meta->start(),
+                        end: $meta->end(),
+                        raw: $meta->raw()
+                    );
+
+                    $value->setKey($key);
+                    $value->setArrayValue($meta->raw());
+
+                    $result->push($value);
+
+                    continue;
+                }
+
 
                 $section = Section::make(
                     start: $meta?->start() ?? static::computeStart($children),
@@ -219,6 +236,20 @@ class Section extends ParentNode
         }
 
         return $result;
+    }
+
+    public static function isNotEmptyArray(Node $meta): bool
+    {
+        $raw = $meta->raw();
+
+        array_pop($raw);
+        array_shift($raw);
+
+        $raw = array_filter($raw, fn($i) => trim($i) !== '');
+
+        if (empty($raw)) return false;
+
+        return true;
     }
 
     protected static function computeStart(Collection $children): int
