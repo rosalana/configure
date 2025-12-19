@@ -229,7 +229,7 @@ abstract class ParentNode extends Node
         return $this;
     }
 
-    protected function reflow(): void
+    public function reflow(): void
     {
         $cursor = $this->start();
 

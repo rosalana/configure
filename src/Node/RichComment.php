@@ -22,7 +22,7 @@ class RichComment extends Node
     {
         $instance = parent::makeEmpty('richcomment_' . bin2hex(random_bytes(4)));
         $instance->setLabel($label);
-        $instance->setDescription($description);
+        $instance->setDescription($description, true);
         $instance->end += 4 + ($description ? (count(explode("\n", $description)) + 2) : 0);
 
         return $instance;
@@ -79,7 +79,7 @@ class RichComment extends Node
                             start: $start,
                             end: $index,
                             raw: $buffer,
-                        )->setLabel($label)->setDescription($desc)->setKey(
+                        )->setLabel($label)->setDescription($desc, true)->setKey(
                             $stack ? implode('.', $stack) . '.' . $key : $key
                         )
                     );
@@ -133,8 +133,17 @@ class RichComment extends Node
         return $this;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(?string $description, bool $ghost = false): static
     {
+        if (! $ghost) {
+            $currentScale = $this->description ? (count(explode("\n", $this->description)) + 2) : 0;
+            $incommingScale = $description ? (count(explode("\n", $description)) + 2) : 0;
+
+            $this->end += $incommingScale - $currentScale;
+            $this->parent()->reflow();
+        }
+
+
         $this->description = $description;
         return $this;
     }
