@@ -231,6 +231,8 @@ class Section extends ParentNode
                     $section->addChild($child, true);
                 }
 
+                $section->reflow();
+
                 $result->push($section);
             }
         }

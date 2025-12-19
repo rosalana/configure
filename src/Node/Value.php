@@ -61,7 +61,7 @@ class Value extends Node
                 start: $index,
                 end: $index,
                 raw: [$index => $line]
-            )->set($value)->setKey($fullKey));
+            )->set($value, true)->setKey($fullKey));
         }
 
         return $nodes;
@@ -97,18 +97,33 @@ class Value extends Node
         ];
     }
 
-    public function add(string $value): static
+    public function add(string $value, bool $ghost = false): static
     {
         if (!$this->value) {
             $this->value = $value;
         }
 
+        if ($this->arrayCount() >= 5) {
+            $this->end = $this->start() + $this->arrayCount() + 1;
+            if (! $ghost) {
+                $this->parent()->reflow();
+            }
+        }
+
         return $this;
     }
 
-    public function set(string $value): static
+    public function set(string $value, bool $ghost = false): static
     {
         $this->value = $value;
+
+        if ($this->arrayCount() >= 5) {
+            $this->end = $this->start() + $this->arrayCount() + 1;
+            if (! $ghost) {
+                $this->parent()->reflow();
+            }
+        }
+
         return $this;
     }
 
@@ -236,6 +251,8 @@ class Value extends Node
 
         if (count($result) >= 5) {
             $this->end = $this->start() + count($result) + 1;
+        } else {
+            $this->end = $this->start();
         }
 
         if (str_ends_with(',', array_last($result))) {
