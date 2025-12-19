@@ -355,6 +355,13 @@ interface Node
     public function remove(): ParentNode|Configure;
 
     /**
+     * Make a duplicate of the node.
+     * 
+     * @return static
+     */
+    public function replicate(): static;
+
+    /**
      * Convert the node to an array representation.
      * 
      * @return array

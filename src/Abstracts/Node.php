@@ -333,6 +333,11 @@ abstract class Node implements ContractsNode
         return $this->parent()->removeChild($this);
     }
 
+    public function replicate(): static
+    {
+        return clone $this;
+    }
+
     public function toArray(): array
     {
         return [

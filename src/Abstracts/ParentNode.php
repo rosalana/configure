@@ -313,6 +313,15 @@ abstract class ParentNode extends Node
         return $this;
     }
 
+    public function replicate(): static
+    {
+        $clone = parent::replicate();
+        $clone->nodes = $this->nodes->map(fn($node) => $node->replicate());
+        foreach ($clone->nodes as $node) {
+            $node->setParent($clone);
+        }
+        return $clone;
+    }
 
     public function toArray(): array
     {
