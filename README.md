@@ -84,8 +84,8 @@ You can traverse deeper:
 
 ```php
 $file->section('connections')
-     ->section('mysql')
-     ->value('host');
+          ->section('mysql')
+               ->value('host');
 ```
 
 Or jump directly using a full path:
