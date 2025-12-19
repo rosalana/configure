@@ -279,6 +279,8 @@ class Value extends Node
             $value = rtrim($value, ']');
             $value = explode(',', $value);
 
+            $value = array_filter($value, fn($i) => trim($i) != '');
+
             return count($value);
         }
 
@@ -294,6 +296,7 @@ class Value extends Node
             $value = explode(',', $value);
 
             $value = array_map(fn($v) => trim($v), $value);
+            $value = array_filter($value, fn($i) => trim($i) != '');
 
             return $value;
         }
