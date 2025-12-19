@@ -450,7 +450,6 @@ $node->isLastChild(): bool;
 ### Value Helpers
 
 ```php
-$value->get(): ?string;
 $value->isNull(): bool;
 $value->isString(): bool;
 $value->isNumber(): bool;
