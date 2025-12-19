@@ -105,9 +105,12 @@ class Value extends Node
 
         if ($this->arrayCount() >= 5) {
             $this->end = $this->start() + $this->arrayCount() + 1;
-            if (! $ghost) {
-                $this->parent()->reflow();
-            }
+        } else {
+            $this->end = $this->start();
+        }
+
+        if (! $ghost) {
+            $this->parent()->reflow();
         }
 
         return $this;
@@ -119,9 +122,12 @@ class Value extends Node
 
         if ($this->arrayCount() >= 5) {
             $this->end = $this->start() + $this->arrayCount() + 1;
-            if (! $ghost) {
-                $this->parent()->reflow();
-            }
+        } else {
+            $this->end = $this->start();
+        }
+
+        if (! $ghost) {
+            $this->parent()->reflow();
         }
 
         return $this;
