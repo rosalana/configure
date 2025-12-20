@@ -27,6 +27,12 @@ class Configure
         return (new self($name))->reader->read();
     }
 
+    public static function fileExists(string $name): bool
+    {
+        $file = File::makeEmpty($name);
+        return $file->exists();
+    }
+
     public function save(): void
     {
         $this->writer->write();
