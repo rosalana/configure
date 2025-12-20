@@ -179,6 +179,13 @@ interface Node
     public function isNew(): bool;
 
     /**
+     * Determine if the node exists (is not new).
+     * 
+     * @return bool
+     */
+    public function exists(): bool;
+
+    /**
      * Determine if the node has unsaved changes.
      * 
      * @return bool

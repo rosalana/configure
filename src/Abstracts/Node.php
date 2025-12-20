@@ -143,6 +143,11 @@ abstract class Node implements ContractsNode
         return $this->created;
     }
 
+    public function exists(): bool
+    {
+        return ! $this->isNew();
+    }
+
     public function isDirty(): bool
     {
         if ($this->isNew()) {

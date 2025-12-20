@@ -62,6 +62,27 @@ class File extends ParentNode
         return explode(':', $this->key(), 2)[1];
     }
 
+    public function has(string $node): bool
+    {
+        if (str_contains($node, '.')) {
+            $parts = explode('.', $node);
+            $current = $this;
+
+            foreach ($parts as $part) {
+                if ($part === '') continue;
+                if ($current->has($part)) {
+                    $current = $current->getChild($part);
+                } else {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return parent::has($node);
+    }
+
     public function fullName(): string
     {
         return $this->name() . '.php';

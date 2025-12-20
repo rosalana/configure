@@ -117,13 +117,28 @@ abstract class ParentNode extends Node
     }
 
     /**
-     * Check if the parent node has the given child node.
+     * Check if the parent node has the given node.
+     * @param string $node
      * 
-     * @param Node|self $node
      * @return bool
      */
-    public function hasChild(Node|self $node): bool
+    public function has(string $node): bool
     {
+        return $this->hasChild($node);
+    }
+
+    /**
+     * Check if the parent node has the given child node.
+     * 
+     * @param Node|self|string $node
+     * @return bool
+     */
+    public function hasChild(Node|self|string $node): bool
+    {
+        if (is_string($node)) {
+            $node = $this->getChild($node);
+        }
+
         return $this->nodes->contains($node);
     }
 
