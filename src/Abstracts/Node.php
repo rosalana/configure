@@ -145,7 +145,24 @@ abstract class Node implements ContractsNode
 
     public function isDirty(): bool
     {
-        return false; // not implemented yet
+        if ($this->isNew()) {
+            return true;
+        }
+
+        $raw = $this->raw();
+        $render = $this->render();
+
+        if (count($raw) !== count($render)) {
+            return true;
+        }
+
+        foreach ($raw as $lineNumber => $line) {
+            if (!array_key_exists($lineNumber, $render) || $render[$lineNumber] !== $line) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function isTypeOf(string $type): bool
