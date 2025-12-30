@@ -336,9 +336,11 @@ abstract class Node implements ContractsNode
             $parent = $this->root()->section($parent);
         }
 
-        $parent->addChild($this->replicate());
+        $copy = $this->replicate();
 
-        return $this;
+        $parent->addChild($copy);
+
+        return $copy;
     }
 
     public function setKey(string $key): static
