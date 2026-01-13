@@ -25,11 +25,37 @@ class Value extends Node
 
         $arrayStartRegex = '/^\s*([\'"])(?<key>[^\'"]+)\1\s*=>\s*\[\s*$/';
 
-        $valueRegex = '/^\s*([\'"])(?<key>[^\'"]+)\1\s*=>\s*(?<value>.+?),\s*$/';
+        $valueRegex = '/^\s*([\'"])(?<key>[^\'"]+)\1\s*=>\s*(?<value>.+?)\s*$/';
+
+        $multilineOpen = null;
+        $multilineDepth = 0;
 
         foreach ($content as $index => $line) {
 
             $trim = trim($line);
+
+            if ($multilineOpen) {
+                $multilineOpen['raw'][$index] = $line;
+                $multilineOpen['lines'][] = $trim;
+
+                $syntaxDepth = substr_count($line, '(') - substr_count($line, ')');
+                $multilineDepth += $syntaxDepth;
+
+                if ($multilineDepth == 0) {
+                    $value = implode("\n", $multilineOpen['lines']);
+
+                    $nodes->push(Value::make(
+                        start: $multilineOpen['start'],
+                        end: $index,
+                        raw: $multilineOpen['raw']
+                    )->set($value, true)->setKey($multilineOpen['key']));
+
+                    $multilineDepth = 0;
+                    $multilineOpen = null;
+                }
+
+                continue;
+            }
 
             if (preg_match($arrayStartRegex, $line, $match)) {
                 $stack[] = $match['key'];
@@ -58,11 +84,26 @@ class Value extends Node
                 ? implode('.', $stack) . '.' . $key
                 : $key;
 
-            $nodes->push(Value::make(
-                start: $index,
-                end: $index,
-                raw: [$index => $line]
-            )->set($value, true)->setKey($fullKey));
+            $syntaxDepth = substr_count($value, '(') - substr_count($value, ')');
+
+            if ($syntaxDepth == 0) {
+                $nodes->push(Value::make(
+                    start: $index,
+                    end: $index,
+                    raw: [$index => $line]
+                )->set($value, true)->setKey($fullKey));
+
+                continue;
+            }
+
+            $multilineOpen = [
+                'key' => $fullKey,
+                'start' => $index,
+                'raw' => [$index => $line],
+                'lines' => [$value]
+            ];
+
+            $multilineDepth = $syntaxDepth;
         }
 
         return $nodes;
@@ -89,12 +130,28 @@ class Value extends Node
             })->toArray();
         }
 
-        if ($this->getValueDataType() === 'string' && !preg_match('/^([\'"]).*\1$/', $this->value)) {
+        if ($this->getValueDataType() === 'string' && !preg_match('/^([\'"]).*\1,?$/', $this->value)) {
             $this->value = "'" . trim($this->value, "'\"") . "'";
         }
 
+        if (substr_count($this->value, "\n") > 0) {
+            $lines = explode("\n", $this->value);
+            $result = [];
+
+            $result[$this->start()] = str_repeat(' ', $this->parent()?->indent() ?? 0) . "'{$this->name()}' => " . array_shift($lines);
+            foreach ($lines as $index => $line) {
+                if ($index === count($lines) - 1) {
+                    $result[$this->start() + $index + 1] = str_repeat(' ', ($this->parent()?->indent() ?? 0)) . $line . (str_ends_with($line, ',') ? '' : ',');
+                } else {
+                    $result[$this->start() + $index + 1] = str_repeat(' ', ($this->parent()?->indent() ?? 0) + 4) . $line;
+                }
+            }
+
+            return $result;
+        }
+
         return [
-            $this->start() => str_repeat(' ', $this->parent()?->indent() ?? 0) . "'{$this->name()}' => {$this->value},",
+            $this->start() => str_repeat(' ', $this->parent()?->indent() ?? 0) . "'{$this->name()}' => {$this->value}" . (str_ends_with($this->value, ',') ? '' : ','),
         ];
     }
 
@@ -106,6 +163,8 @@ class Value extends Node
 
         if ($this->arrayCount() >= self::WRAP_ARRAY_AFTER) {
             $this->end = $this->start() + $this->arrayCount() + 1;
+        } elseif (substr_count($this->value, "\n") > 0) {
+            $this->end = $this->start() + substr_count($this->value, "\n");
         } else {
             $this->end = $this->start();
         }
@@ -123,6 +182,8 @@ class Value extends Node
 
         if ($this->arrayCount() >= self::WRAP_ARRAY_AFTER) {
             $this->end = $this->start() + $this->arrayCount() + 1;
+        } elseif (substr_count($this->value, "\n") > 0) {
+            $this->end = $this->start() + substr_count($this->value, "\n");
         } else {
             $this->end = $this->start();
         }
@@ -221,7 +282,7 @@ class Value extends Node
             return 'null';
         }
 
-        if (str_starts_with($this->value, '[') && str_ends_with($this->value, ']')) {
+        if (str_starts_with($this->value, '[') && (str_ends_with($this->value, ']') || str_ends_with($this->value, '],'))) {
             return 'array';
         }
 

@@ -34,6 +34,8 @@ class Reader
 
         $sections->each(fn ($node) => $this->file->addChild($node, true));
 
+        $this->file->reflow();
+
         return $this->file;
     }
 
