@@ -278,6 +278,10 @@ class Value extends Node
 
     protected function getValueDataType(): string
     {
+        if ($this->value === null) { // default to null if value is not set
+            return 'null';
+        }
+
         if (is_numeric($this->value)) {
             return 'number';
         }
