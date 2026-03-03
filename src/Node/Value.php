@@ -157,6 +157,10 @@ class Value extends Node
 
     public function add(string $value, bool $ghost = false): static
     {
+        if (str_ends_with($value, ',')) { // remove trailing comma for accurate data type detection, it will be added back in render if needed
+            $value = rtrim($value, ',');
+        }
+
         if (!$this->value) {
             $this->value = $value;
         }
@@ -178,6 +182,10 @@ class Value extends Node
 
     public function set(string $value, bool $ghost = false): static
     {
+        if (str_ends_with($value, ',')) { // remove trailing comma for accurate data type detection, it will be added back in render if needed
+            $value = rtrim($value, ',');
+        }
+
         $this->value = $value;
 
         if ($this->arrayCount() >= self::WRAP_ARRAY_AFTER) {

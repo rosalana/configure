@@ -342,6 +342,7 @@ interface Node
      * Set the parent of the node.
      * @param ParentNode|Configure $parent
      * 
+     * @internal
      * @return static
      */
     public function setParent(ParentNode|Configure $parent): static;
@@ -350,6 +351,7 @@ interface Node
      * Set the start line of the node.
      * @param int $start
      * 
+     * @internal
      * @return static
      */
     public function setStart(int $start): static;
@@ -358,6 +360,7 @@ interface Node
      * Set the end line of the node.
      * @param int $end
      * 
+     * @internal
      * @return static
      */
     public function setEnd(int $end): static;
